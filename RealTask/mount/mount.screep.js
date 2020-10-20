@@ -22,22 +22,25 @@ const mountCreep = {
         let task = this.memory.task;
         if (!task){
             task = {
-                "name": "spawn",
-                "args": {},
-                "status": "initTask",
+                name: "spawn",
+                args: {},
+                status: "initTask",
             };
-            this.task(task);
+            this.task = task;
         }
         return task;
     },
 
     takeTask() {
-        this.taskSet[this.status]();
+        this.taskSet[this.role]();
     },
 
 
     run() {
-        let task = this.task();
+        let task = this.task;
+        if (!task){
+            this.takeTask();
+        }
         if (this.spawning){
             return true;
         }

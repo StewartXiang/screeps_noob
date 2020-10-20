@@ -27,12 +27,16 @@ var roleBuilder = {
 			const targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 			const needs = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.hits / structure.hitsMax < 0.5) && 
+                    return ((structure.hits / structure.hitsMax < 0.5) &&
                     (structure.structureType == STRUCTURE_CONTAINER ||
                         structure.structureType == STRUCTURE_ROAD ||
-                        structure.structureType == STRUCTURE_RAMPART ||
+                        // structure.structureType == STRUCTURE_RAMPART ||
                         // structure.structureType == STRUCTURE_WALL ||
-                        structure.structureType == STRUCTURE_TOWER);
+                        structure.structureType == STRUCTURE_TOWER))
+                    ||
+                        (structure.hits / structure.hitsMax < 0.1) &&
+                        structure.structureType === STRUCTURE_RAMPART
+                        ;
                 }
             });
             const needs2 = creep.room.find(FIND_STRUCTURES, {
@@ -67,11 +71,11 @@ var roleBuilder = {
 			}
 	    } else {
 	        var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }else if(creep.harvest(sources[1]) == ERR_NOT_ENOUGH_RESOURCES) {
-                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }else if(creep.harvest(sources[0]) == ERR_NOT_ENOUGH_RESOURCES) {
+                if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             }
 	    }

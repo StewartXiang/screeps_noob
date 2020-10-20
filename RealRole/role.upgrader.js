@@ -7,7 +7,7 @@ var roleUpgrader = {
             creep.memory.upgrading = false;
             var sources = creep.room.find(FIND_SOURCES);
             // creep.memory.harvest_num = Math.floor(Math.random()*sources.length);
-            creep.memory.harvest_num = 0;
+            creep.memory.harvest_num = 1;
             creep.say('🔄 harvest');
 	    }
 	    if(!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
@@ -16,7 +16,7 @@ var roleUpgrader = {
 	    }
 	    if(!creep.memory.harvest_num){
             var sources = creep.room.find(FIND_SOURCES);
-            creep.memory.harvest_num = 0;
+            creep.memory.harvest_num = 1;
             // creep.memory.harvest_num = Math.floor(Math.random()*sources.length);
 	    }
 
@@ -30,6 +30,10 @@ var roleUpgrader = {
             var n = creep.memory.harvest_num;
             if(creep.harvest(sources[n]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[n], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }else if(creep.harvest(sources[1]) == ERR_NOT_ENOUGH_RESOURCES) {
+                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
             const har_tar = creep.room.find(FIND_STRUCTURES, {
                 filter: (s) => {

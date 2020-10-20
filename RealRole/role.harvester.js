@@ -9,12 +9,16 @@ var roleHarvester = {
         //     creep.memory.do == "transfer";
         // }
 	    if((creep.store.getUsedCapacity(RESOURCE_ENERGY) < 50 && creep.memory.do == "transfer") || (creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && creep.memory.do != "transfer" || (!creep.memory.target))){
-	        console.log(33)
+	        // console.log(33)
 	        creep.memory.do = "har";
             var sources = creep.room.find(FIND_SOURCES);
-            console.log(sources[0]);
+            // console.log(sources[1]);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }else if(creep.harvest(sources[0]) == ERR_NOT_ENOUGH_RESOURCES) {
+                if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {

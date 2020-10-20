@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var structureTower = require('structure.tower');
 
 module.exports.loop = function () {
     for(var name in Memory.creeps) {
@@ -15,15 +16,15 @@ module.exports.loop = function () {
     // console.log('Harvesters: ' + harvesters.length);
     // console.log("Upgraders: " + upgraders.length);
 
-    if (upgraders.length + harvesters.length < 6) {
+    if (upgraders.length + harvesters.length < 4) {
         var newName = "harvester" + Game.time;
         Game.spawns["XiangHome"].spawnCreep(
             // [WORK, CARRY, MOVE, MOVE],
             // [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
-            [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
-            // [WORK, WORK, WORK, WORK,
-            // CARRY, CARRY, CARRY, CARRY,
-            // MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+            // [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+            [WORK, WORK, WORK, WORK,
+            CARRY, CARRY, CARRY, CARRY,
+            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             newName,
             {memory: {role: "harvester"}});
     }
@@ -33,13 +34,13 @@ module.exports.loop = function () {
         Game.spawns["XiangHome"].spawnCreep(
             // [WORK, WORK, CARRY, MOVE],
             // [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
-            [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+            // [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             // [WORK, WORK, WORK, WORK,
             // CARRY, CARRY, CARRY, CARRY,
             // MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
-            // [WORK, WORK, WORK, WORK, WORK,
-            // CARRY, CARRY, CARRY, CARRY, CARRY,
-            // MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+            [WORK, WORK, WORK, WORK, WORK,
+            CARRY, CARRY, CARRY, CARRY, CARRY,
+            MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             
             newName,
             {memory: {role: "builder"}}
@@ -74,6 +75,13 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == "builder"){
             roleBuilder.run(creep);
+        }
+    }
+
+    for (let s in Game.structures){
+        let structure = Game.structures[s];
+        if (structure.structureType === STRUCTURE_TOWER){
+            structureTower.run(structure);
         }
     }
 }

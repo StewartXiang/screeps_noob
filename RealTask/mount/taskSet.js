@@ -9,7 +9,39 @@ const mountCreepTask = {
 
         },
         digger: function (){
-
+            let diggers = _.filter(Game.creeps, (creep) => creep.role === "digger")
+            let unDigging = _.filter(
+                this.room.source,
+                (s) => {
+                    for (let i=0; i<diggers.length; i++){
+                        if (diggers[i].task.args["target"] === s._id){
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            )
+            if (!unDigging){
+                return {
+                    name: "standby",
+                    args: {},
+                    status: "initTask",
+                }
+            }
+            const unDiggingObj = unDigging.map((s) => Game.getObjectById(s._id));
+            const closest = this.pos.findClosestByPath(unDiggingObj);
+            const ctn = _.filter(
+                unDigging,
+                (s) => s._id === closest.id
+            )[0].container
+            return {
+                name: "dig",
+                args: {
+                    source: closest.id,
+                    container: ctn,
+                },
+                status: "initTask",
+            }
         },
         mover: function (){
 
@@ -27,5 +59,7 @@ const mountCreepTask = {
         return status
     },
 
-
+    get args(){
+        return this.memory.task.args;
+    }
 }

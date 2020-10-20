@@ -2,8 +2,25 @@ module.exports = function () {
     _.assign(Room.prototype, mountRoom)
 }
 const mountRoom = {
-    // run() {
-    // }
+    run() {
+        const t = Game.time;
+        if (t % 10 === 0){
+            this.getSource();
+        }
+        const diggers = this.find(FIND_MY_CREEPS, {
+            filter: (crp) => creep.role === "digger"
+        })
+        if(this.source.length > diggers.length){
+            const spw = this.find(FIND_MY_STRUCTURE, {
+                filter: {structureType: STRUCTURE_SPAWN}
+            })
+            spw[0].spawnCreep(
+                [WORK, MOVE, CARRY],
+                "test",
+                {memory: {role: "digger"}}
+            )
+        }
+    },
     getSource() {
         const sources = this.find(FIND_SOURCES);
         this.memory.sources = [];
@@ -29,6 +46,9 @@ const mountRoom = {
             this.memory.sources.push(data);
         }
     },
+    get source() {
+        return this.memory.sources;
+    }
 
 
 
