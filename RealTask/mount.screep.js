@@ -1,5 +1,5 @@
 // [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
-require("RealTask/mount/taskSet");
+// require("taskSet");
 module.exports = function () {
     _.assign(Creep.prototype, mountCreep)
 };
